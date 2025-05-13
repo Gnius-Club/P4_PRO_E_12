@@ -14,34 +14,24 @@
             color: white;
             padding: 10px;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* Adjusted for spacing */
             font-weight: bold;
-            /* Added Flexbox for side-by-side layout */
-            display: flex;
+            list-style: none;
+            display: flex; /* For side-by-side title and time */
             justify-content: space-between;
             align-items: center;
+            border-radius: 5px; /* Rounded corners for banner */
         }
-        /* Use details/summary for accordions */
-        details > summary {
-            list-style: none; /* Remove default triangle */
+        .content { 
+            display: none; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            margin-bottom: 10px; 
+            border-radius: 5px; /* Rounded corners for content */
+            margin-top: -10px; /* Visual connection with banner */
+            padding-top: 20px; /* Avoid text clash */
+            background-color: #fff; /* Ensure content background is white or default */
         }
-        details > summary::-webkit-details-marker {
-            display: none; /* Remove default triangle for Chrome/Safari */
-        }
-        details > summary::marker {
-             display: none; /* Remove default triangle for Firefox */
-        }
-        /* Custom marker logic (optional) */
-        /*
-         details > summary:before {
-            content: '▶ ';
-            margin-right: 5px;
-         }
-         details[open] > summary:before {
-            content: '▼ ';
-         }
-        */
-        .content { display: block; padding: 10px; border: 1px solid #ddd; margin-top: -10px; margin-bottom: 10px; border-top: none;} /* Ensure content is visible by default */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -52,7 +42,7 @@
             text-align: left;
             vertical-align: top;
         }
-        span[style*="color: red;"] { /* Keep red span for emphasis */
+        span[style*="color: red;"] { 
             font-weight: bold;
         }
          ul, ol {
@@ -71,15 +61,49 @@
         .kanban-test { color: #d9534f; } /* Red for Test */
         .kanban-done { color: #5cb85c; } /* Green for Done */
 
-        /* Span styles for title and time in banner */
+        /* Making facilitator instructions clearer */
+        td em, td i { /* Style for italicized facilitator notes */
+            color: #555;
+            font-style: italic;
+            display: block; /* Put notes on new lines */
+            margin-top: 5px;
+        }
+        /* Ensure step <strong> tags render bold */
+        td strong { font-weight: bold; } /* General strong for keywords */
+        td > strong { display: block; margin-bottom: 5px; } /* For step headers */
+
         .activity-title {
-            flex-grow: 1; /* Allows title to take available space */
-            padding-right: 10px; /* Add some space between title and time */
+            flex-grow: 1; 
+            padding-right: 10px; 
         }
         .activity-time {
-            white-space: nowrap; /* Prevents time from wrapping */
+            white-space: nowrap; 
         }
     </style>
+    <script>
+        function toggleContent(id) {
+            const content = document.getElementById(id);
+            if (content) {
+                if (content.style.display === "none" || content.style.display === "") {
+                    content.style.display = "block";
+                } else {
+                    content.style.display = "none";
+                }
+            }
+        }
+
+        window.onload = () => {
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => {
+                content.style.display = 'none';
+            });
+            // Open "Resumen de Sesión" by default
+            const resumenContent = document.getElementById('activity_0_content');
+            if (resumenContent) {
+                resumenContent.style.display = 'block';
+            }
+        };
+    </script>
 </head>
 <body>
     <div class="header">
@@ -89,32 +113,29 @@
         <h2 class="time-title">Tiempo efectivo de clase: 40 minutos</h2>
 
         <!-- Resumen de Sesión -->
-        <details id="activity-0" class="activity">
-            <summary class="banner">
+        <div id="activity-0" class="activity">
+            <div class="banner" onclick="toggleContent('activity_0_content')">
                 <span class="activity-title">📝 Resumen de Sesión</span>
                 <span class="activity-time"></span>
-            </summary>
-            <div class="content">
+            </div>
+            <div id="activity_0_content" class="content" style="display: block;">
                 <table>
                     <tr>
                         <td style="width: 50%; padding: 10px; border-right: 1px solid #ddd;">
                             <strong>🎯 Objetivo de la Sesión:</strong>
                             <ul>
-                                <li>Realizar la verificación final completa del Prototipo Funcional Avanzado.</li>
-                                <li>Preparar el prototipo para la entrega oficial al profesor.</li>
-                                <li>Formalizar la entrega del proyecto.</li>
-                                <li><span style="color: red;">Nota:</span> No hay presentación formal en clase por parte de los equipos.</li>
+                                <li>Realizar las últimas verificaciones funcionales del Prototipo Avanzado.</li>
+                                <li>Asegurar que el prototipo esté completamente listo y pulido para la entrega final.</li>
+                                <li>Preparar y ejecutar la entrega digital del archivo final del proyecto Scratch al profesor.</li>
                             </ul>
                             <strong>⏱️ Duración Estimada:</strong> 40 minutos.
                         </td>
                         <td style="width: 50%; padding: 10px;">
                             <strong>🔑 Entregable Clave:</strong>
                             <ul>
-                                <li>Prototipo Funcional Avanzado verificado y entregado al profesor.</li>
-                                <li>Tarjeta principal "Prototipo Avanzado" movida a "¡Listo!" (✅) en el Kanban.</li>
-                                <li>Código final guardado según instrucciones.</li>
-                                <li>Robot físicamente completo, etiquetado y ordenado.</li>
-                                <li>Espacio de trabajo recogido.</li>
+                                <li>Archivo final del Prototipo Avanzado (.sb3) guardado con nomenclatura VIP.</li>
+                                <li>Prototipo completamente verificado (funcionalidad y pulido).</li>
+                                <li>Proyecto entregado exitosamente al profesor según el método especificado.</li>
                             </ul>
                             <strong>🛠️ Materiales Específicos:</strong>
                              <ul>
@@ -133,17 +154,17 @@
                     </tr>
                 </table>
             </div>
-        </details>
+        </div>
 
         <!-- Desarrollo de la Sesión -->
 
-        <!-- Actividad 1: ¡Saludo Final y Meta de Entrega Avanzada! -->
-        <details id="activity-1" class="activity">
-            <summary class="banner">
-                 <span class="activity-title">🏆 Actividad 1: ¡Saludo Final y Meta de Entrega Avanzada!</span>
+        <!-- Actividad 1: ¡El Gran Final! Saludo y Meta de Entrega Avanzada! -->
+        <div id="activity-1" class="activity">
+            <div class="banner" onclick="toggleContent('activity_1_content')">
+                 <span class="activity-title">🏆 Actividad 1: ¡El Gran Final! Saludo y Meta de Entrega Avanzada!</span>
                  <span class="activity-time">⏰ Tiempo: 1.5 minutos</span>
-            </summary>
-            <div class="content">
+            </div>
+            <div id="activity_1_content" class="content">
                 <table>
                     <tr>
                         <th style="width: 50%;">Acción</th>
@@ -151,9 +172,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <strong>Paso 1 (1.5 min):</strong> Iniciar la sesión final con enfoque en la entrega formal.
-                            <br><em>(<strong>Proyectar Diapositiva 1:</strong> Título Sesión 12 (Avanzado) + Objetivo: "¡Entrega del Prototipo Avanzado! Objetivo: Verificación final completa y entrega oficial al profesor").</em>
-                            <br><em>(<strong>Proyectar Diapositiva 2:</strong> Meta: Entrega Avanzada - Imagen del Robot Héroe Avanzado con una medalla 🏅 o cinta de "Finalizado". Texto: "¡Meta de hoy: Verificación final y entrega oficial!").</em>
+                            <strong>Paso 1 (1.5 min):</strong>
+                            <ul>
+                                <li>Iniciar la sesión final con enfoque en la entrega formal.</li>
+                                <li><strong>Proyectar Diapositiva 1</strong>.</li>
+                                <li><strong>Proyectar Diapositiva 2</strong>.</li>
+                            </ul>
                         </td>
                         <td>
                             "¡Héroes Robóticos, ha llegado el gran día! ¡Sesión 12, la Misión Maestra Cumplida! Hoy realizaremos la verificación final de sus increíbles Prototipos Avanzados y los prepararemos para la entrega oficial."
@@ -163,15 +187,15 @@
                     </tr>
                 </table>
             </div>
-        </details>
+        </div>
 
         <!-- Actividad 2: ¡Verificación Exhaustiva y Empaquetado Pro! -->
-        <details id="activity-2" class="activity">
-            <summary class="banner">
+        <div id="activity-2" class="activity">
+            <div class="banner" onclick="toggleContent('activity_2_content')">
                  <span class="activity-title">📦 Actividad 2: ¡Verificación Exhaustiva y Empaquetado Pro!</span>
                  <span class="activity-time">⏰ Tiempo: 33.5 minutos</span>
-            </summary>
-            <div class="content">
+            </div>
+            <div id="activity_2_content" class="content">
                 <table>
                     <tr>
                         <th style="width: 50%;">Acción</th>
@@ -179,9 +203,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <strong>Paso 1 (10 min):</strong> Demo funcional final interna y verificación por el Tester.
-                            <br><em>(<strong>Proyectar Diapositiva 3:</strong> Verificación Exhaustiva - Tareas Roles I: Tester 🧪: Realiza demo funcional final (para equipo y profesor si pasa). Verifica TODAS las características clave. Ing. 💻: Última revisión código cargado, verifica baterías. Arq. T. 📐: Realiza checklist físico final.).</em>
-                            <br>El Tester lidera una demo interna mostrando todas las funcionalidades implementadas. El profesor puede observar estas demos.
+                            <strong>Paso 1 (10 min):</strong>
+                            <ul>
+                                <li>Demo funcional final interna y verificación por el Tester.</li>
+                                <li><strong>Proyectar Diapositiva 3</strong>.</li>
+                                <li>El Tester lidera una demo interna mostrando todas las funcionalidades implementadas. El profesor puede observar estas demos.</li>
+                            </ul>
                         </td>
                         <td>
                             "Comenzamos la 'Verificación Exhaustiva y Empaquetado Pro'. ¡Última revisión detallada!"
@@ -199,9 +226,12 @@
                     </tr>
                      <tr>
                         <td>
-                            <strong>Paso 2 (15 min):</strong> Acciones finales de Ingeniero/a y Arquitecto/a T. mientras el Tester confirma.
-                            <br>Ingeniero/a guarda el código final según instrucciones (ej: carpeta compartida, nombre específico).
-                            <br>Arquitecto/a T. completa el checklist físico, asegurando etiquetado y estado general.
+                            <strong>Paso 2 (15 min):</strong>
+                            <ul>
+                                <li>Acciones finales de Ingeniero/a y Arquitecto/a T. mientras el Tester confirma.</li>
+                                <li>Ingeniero/a guarda el código final según instrucciones.</li>
+                                <li>Arquitecto/a T. completa el checklist físico, asegurando etiquetado y estado general.</li>
+                            </ul>
                         </td>
                         <td>
                             "Mientras el Tester finaliza la verificación funcional:"
@@ -215,9 +245,12 @@
                     </tr>
                      <tr>
                         <td>
-                            <strong>Paso 3 (5 min):</strong> Kanban Flow Final: Mover tarjeta "Prototipo Avanzado".
-                            <br><em>(<strong>Proyectar Diapositiva 4:</strong> Kanban Flow Final - Misión Cumplida. Flecha grande moviendo tarjeta "Prototipo Avanzado" a ✅ ¡Listo!. Texto: "¡Mover tarjeta principal a Listo!").</em>
-                            <br>El equipo mueve la tarjeta principal del proyecto a la columna final.
+                            <strong>Paso 3 (5 min):</strong>
+                            <ul>
+                                <li>Kanban Flow Final: Mover tarjeta "Prototipo Avanzado".</li>
+                                <li><strong>Proyectar Diapositiva 4</strong>.</li>
+                                <li>El equipo mueve la tarjeta principal del proyecto a la columna final.</li>
+                            </ul>
                         </td>
                         <td>
                             "¡Equipos, si la demo final fue exitosa, el código está guardado y el robot está físicamente listo según el checklist...!"
@@ -229,9 +262,12 @@
                     </tr>
                      <tr>
                         <td>
-                             <strong>Paso 4 (3.5 min):</strong> Acción Principal: Preparación meticulosa para la entrega.
-                            <br>Equipos terminan de ordenar cables, verificar baterías, colocar etiquetas, etc.
-                            <br>Profesor guía el proceso y puede usar un checklist de recepción final.
+                             <strong>Paso 4 (3.5 min):</strong>
+                             <ul>
+                                 <li>Acción Principal: Preparación meticulosa para la entrega.</li>
+                                 <li>Equipos terminan de ordenar cables, verificar baterías, colocar etiquetas, etc.</li>
+                                 <li>Profesor guía el proceso y puede usar un checklist de recepción final.</li>
+                             </ul>
                         </td>
                         <td>
                             "Ahora, la 'Acción Principal': Preparación meticulosa final."
@@ -243,15 +279,15 @@
                     </tr>
                 </table>
             </div>
-        </details>
+        </div>
 
         <!-- Actividad 3: ¡Prototipo Avanzado Entregado! -->
-        <details id="activity-3" class="activity">
-            <summary class="banner">
+        <div id="activity-3" class="activity">
+            <div class="banner" onclick="toggleContent('activity_3_content')">
                  <span class="activity-title">🎉 Actividad 3: ¡Prototipo Avanzado Entregado!</span>
                  <span class="activity-time">⏰ Tiempo: 5 minutos</span>
-            </summary>
-            <div class="content">
+            </div>
+            <div id="activity_3_content" class="content">
                 <table>
                      <tr>
                         <th style="width: 50%;">Acción</th>
@@ -259,8 +295,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <strong>Paso 1 (1 min):</strong> Profesor indica procedimiento exacto de entrega.
-                            <br><em>(<strong>Proyectar Diapositiva 5:</strong> ¡Entrega Final! - Instrucciones claras: 1. Robots APAGADOS. 2. Entregar en [Zona Designada]. 3. Asegurar código guardado. + Icono de Misión Cumplida 🎯 o Cohete Aterrizando 🚀).</em>
+                            <strong>Paso 1 (1 min):</strong>
+                            <ul>
+                                <li>Profesor indica procedimiento exacto de entrega.</li>
+                                <li><strong>Proyectar Diapositiva 5</strong>.</li>
+                            </ul>
                         </td>
                         <td>
                             "¡Ha llegado el momento cumbre! La entrega final de su Prototipo Avanzado."
@@ -276,7 +315,10 @@
                     </tr>
                      <tr>
                         <td>
-                            <strong>Paso 2 (2 min):</strong> Equipos entregan sus prototipos avanzados de forma ordenada.
+                            <strong>Paso 2 (2 min):</strong>
+                            <ul>
+                                <li>Equipos entregan sus prototipos avanzados de forma ordenada.</li>
+                            </ul>
                         </td>
                         <td>
                             "¡Muy bien! Equipo 1, por favor, procedan con la entrega... Equipo 2..."
@@ -286,8 +328,11 @@
                     </tr>
                      <tr>
                         <td>
-                            <strong>Paso 3 (2 min):</strong> Cierre por el Profesor: Felicitaciones y reconocimiento.
-                             <br><em>(<strong>Proyectar Diapositiva 6:</strong> ¡Misión Maestra Cumplida! - Mensaje de felicitación. Destacar complejidad, trabajo en equipo, ciclo completo. Imagen de celebración o grupo de robots héroes).</em>
+                            <strong>Paso 3 (2 min):</strong>
+                            <ul>
+                                <li>Cierre por el Profesor: Felicitaciones y reconocimiento.</li>
+                                <li><strong>Proyectar Diapositiva 6</strong>.</li>
+                            </ul>
                         </td>
                         <td>
                             "¡Equipos, lo han logrado! ¡Misión Maestra Cumplida!"
@@ -296,14 +341,14 @@
                             <br><br>
                             "Han enfrentado desafíos, corregido errores, tomado decisiones estratégicas y, lo más importante, han creado algo con potencial para tener un impacto positivo. ¡Estoy increíblemente orgulloso de cada uno de ustedes y del esfuerzo y la dedicación que han puesto en sus Robots Héroes Avanzados!"
                             <br><br>
-                            "¡Un fuerte aplauso para todos por esta misión completada!" <em>(Liderar aplauso final).</em>
+                            "¡Un fuerte aplauso para todos por esta misión completada!" <em>(Liderar aplauso).</em>
                             <br><br>
                             "Pueden recoger sus cosas. ¡Gracias por este increíble viaje tecnológico!"
                         </td>
                     </tr>
                 </table>
             </div>
-        </details>
+        </div>
 
     </div> <!-- Fin del container -->
 </body>
